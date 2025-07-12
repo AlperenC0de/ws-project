@@ -47,6 +47,20 @@ export class RecipeParser {
       featured: "Tacos, Pozole, Guacamole",
       imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200"
     },
+    "Indian": {
+      name: "Indian",
+      flag: "🇮🇳",
+      description: "Complex spices and rich flavors",
+      featured: "Curry, Biryani, Tandoori",
+      imageUrl: "https://images.unsplash.com/photo-1596797038530-2c107229654b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200"
+    },
+    "Greek": {
+      name: "Greek",
+      flag: "🇬🇷",
+      description: "Fresh ingredients and Mediterranean flavors",
+      featured: "Moussaka, Gyros, Baklava",
+      imageUrl: "https://images.unsplash.com/photo-1544982503-9f984c14501a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=300&h=200"
+    },
     "Spanish": {
       name: "Spanish",
       flag: "🇪🇸",
@@ -109,6 +123,39 @@ export class RecipeParser {
     "Hünkar Beğendi": "https://images.unsplash.com/photo-1574484284002-952d92456975?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=400&h=250"
   };
 
+  public static parseAllRecipeFiles(): { recipes: InsertRecipe[], cuisines: InsertCuisine[] } {
+    const allRecipes: InsertRecipe[] = [];
+    const cuisines = Object.values(this.cuisineData);
+    
+    // Map of file names to cuisine names
+    const fileMap = {
+      'turk_mutfagi_1752349052207.txt': 'Turkish',
+      'italy_mutfagi_1752349052205.txt': 'Italian',
+      'japon_mutfagi_1752349052206.txt': 'Japanese',
+      'mexico_mutfagi_1752349052206.txt': 'Mexican',
+      'spain_mutfagi_1752349052206.txt': 'Spanish',
+      'tayland_mutfagi_1752349052207.txt': 'Thai',
+      'chine_mutfagi_1752349052204.txt': 'Chinese',
+      'france_mutfagi_1752349052204.txt': 'French',
+      'india_mutfagi_1752349052205.txt': 'Indian',
+      'greek_mutfagi_1752349052205.txt': 'Greek'
+    };
+    
+    for (const [fileName, cuisineName] of Object.entries(fileMap)) {
+      try {
+        const filePath = join(__dirname, '../../attached_assets', fileName);
+        const fileContent = readFileSync(filePath, 'utf-8');
+        const recipes = this.parseRecipes(fileContent, cuisineName);
+        allRecipes.push(...recipes);
+        console.log(`Loaded ${recipes.length} recipes from ${cuisineName} cuisine`);
+      } catch (error) {
+        console.error(`Error parsing ${fileName}:`, error);
+      }
+    }
+    
+    return { recipes: allRecipes, cuisines };
+  }
+
   public static parseRecipeFile(filePath: string): { recipes: InsertRecipe[], cuisines: InsertCuisine[] } {
     try {
       const fileContent = readFileSync(filePath, 'utf-8');
@@ -121,13 +168,13 @@ export class RecipeParser {
     }
   }
 
-  private static parseRecipes(content: string): InsertRecipe[] {
+  private static parseRecipes(content: string, forcedCuisine?: string): InsertRecipe[] {
     const recipes: InsertRecipe[] = [];
     const sections = content.split('**YEMEK ADI:**').filter(section => section.trim());
     
     for (const section of sections) {
       try {
-        const recipe = this.parseRecipeSection(section);
+        const recipe = this.parseRecipeSection(section, forcedCuisine);
         if (recipe) {
           recipes.push(recipe);
         }
@@ -139,7 +186,7 @@ export class RecipeParser {
     return recipes;
   }
 
-  private static parseRecipeSection(section: string): InsertRecipe | null {
+  private static parseRecipeSection(section: string, forcedCuisine?: string): InsertRecipe | null {
     const lines = section.split('\n').map(line => line.trim()).filter(line => line);
     
     if (lines.length === 0) return null;
@@ -208,7 +255,7 @@ export class RecipeParser {
     
     return {
       name: recipe.name,
-      cuisine: 'Turkish',
+      cuisine: forcedCuisine || 'Turkish',
       category: currentCategory,
       origin: recipe.origin || '',
       flavorProfile: recipe.flavorProfile || '',

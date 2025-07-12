@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application featuring international cuisine recipes from 10 different countries. The application provides users with detailed recipes, including ingredients, instructions, cooking tips, and nutritional information. It's built with a modern React frontend and Express backend, using TypeScript throughout.
+This is a comprehensive full-stack web application featuring international cuisine recipes from 10 different countries (Turkish, Italian, Japanese, Mexican, Spanish, Thai, Chinese, French, Indian, and Greek). The application provides users with detailed recipes, including ingredients, instructions, cooking tips, and nutritional information. It's built with a modern React frontend and Express backend, using TypeScript throughout. The system now processes all 104 recipes from the provided cuisine files.
 
 ## User Preferences
 

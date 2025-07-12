@@ -1,4 +1,5 @@
 import { recipes, cuisines, type Recipe, type InsertRecipe, type Cuisine, type InsertCuisine } from "@shared/schema";
+import { RecipeParser } from "./services/recipeParser";
 
 export interface IStorage {
   getRecipe(id: number): Promise<Recipe | undefined>;
@@ -56,7 +57,8 @@ export class MemStorage implements IStorage {
     const recipe: Recipe = { 
       ...insertRecipe, 
       id,
-      rating: 45 // Default rating
+      rating: 45, // Default rating
+      imageUrl: insertRecipe.imageUrl || null
     };
     this.recipes.set(id, recipe);
     return recipe;
@@ -72,14 +74,30 @@ export class MemStorage implements IStorage {
 
   async createCuisine(insertCuisine: InsertCuisine): Promise<Cuisine> {
     const id = this.currentCuisineId++;
-    const cuisine: Cuisine = { ...insertCuisine, id };
+    const cuisine: Cuisine = { 
+      ...insertCuisine, 
+      id,
+      imageUrl: insertCuisine.imageUrl || null
+    };
     this.cuisines.set(insertCuisine.name, cuisine);
     return cuisine;
   }
 
   async initializeData(): Promise<void> {
-    // This will be called to populate initial data
-    console.log('MemStorage initialized');
+    // Load all recipes from the 10 cuisine files
+    const { recipes, cuisines } = RecipeParser.parseAllRecipeFiles();
+    
+    // Initialize cuisines
+    for (const cuisine of cuisines) {
+      await this.createCuisine(cuisine);
+    }
+    
+    // Initialize recipes
+    for (const recipe of recipes) {
+      await this.createRecipe(recipe);
+    }
+    
+    console.log(`Loaded ${recipes.length} recipes and ${cuisines.length} cuisines`);
   }
 }
 
