@@ -103,4 +103,82 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getRecipe(id: number): Promise<Recipe | undefined> {
+    const [recipe] = await db.select().from(recipes).where(eq(recipes.id, id));
+    return recipe || undefined;
+  }
+
+  async getRecipes(): Promise<Recipe[]> {
+    return await db.select().from(recipes);
+  }
+
+  async getRecipesBySearch(query: string): Promise<Recipe[]> {
+    const allRecipes = await db.select().from(recipes);
+    return allRecipes.filter(recipe => 
+      recipe.name.toLowerCase().includes(query.toLowerCase()) ||
+      recipe.cuisine.toLowerCase().includes(query.toLowerCase()) ||
+      recipe.ingredients.some(ingredient => 
+        ingredient.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+  }
+
+  async getRecipesByCuisine(cuisine: string): Promise<Recipe[]> {
+    const allRecipes = await db.select().from(recipes);
+    return allRecipes.filter(recipe => 
+      recipe.cuisine.toLowerCase() === cuisine.toLowerCase()
+    );
+  }
+
+  async createRecipe(insertRecipe: InsertRecipe): Promise<Recipe> {
+    const [recipe] = await db
+      .insert(recipes)
+      .values(insertRecipe)
+      .returning();
+    return recipe;
+  }
+
+  async getCuisines(): Promise<Cuisine[]> {
+    return await db.select().from(cuisines);
+  }
+
+  async getCuisine(name: string): Promise<Cuisine | undefined> {
+    const [cuisine] = await db.select().from(cuisines).where(eq(cuisines.name, name));
+    return cuisine || undefined;
+  }
+
+  async createCuisine(insertCuisine: InsertCuisine): Promise<Cuisine> {
+    const [cuisine] = await db
+      .insert(cuisines)
+      .values(insertCuisine)
+      .returning();
+    return cuisine;
+  }
+
+  async initializeData(): Promise<void> {
+    // Check if data already exists
+    const existingCuisines = await db.select().from(cuisines);
+    if (existingCuisines.length > 0) {
+      console.log('Database already initialized');
+      return;
+    }
+
+    // Load all recipes from the 10 cuisine files
+    const { recipes: recipeData, cuisines: cuisineData } = RecipeParser.parseAllRecipeFiles();
+    
+    // Initialize cuisines
+    for (const cuisine of cuisineData) {
+      await this.createCuisine(cuisine);
+    }
+    
+    // Initialize recipes
+    for (const recipe of recipeData) {
+      await this.createRecipe(recipe);
+    }
+    
+    console.log(`Loaded ${recipeData.length} recipes and ${cuisineData.length} cuisines`);
+  }
+}
+
+export const storage = new DatabaseStorage();
