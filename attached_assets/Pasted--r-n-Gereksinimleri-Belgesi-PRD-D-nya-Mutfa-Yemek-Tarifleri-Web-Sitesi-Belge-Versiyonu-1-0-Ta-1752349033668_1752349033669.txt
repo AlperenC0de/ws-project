@@ -1,0 +1,190 @@
+Ürün Gereksinimleri Belgesi (PRD) - Dünya Mutfağı Yemek Tarifleri Web Sitesi
+Belge Versiyonu: 1.0
+Tarih: 12 Temmuz 2025
+Hazırlayan: [Adınız/Şirket Adınız]
+
+1. Giriş
+Bu belge, "Dünya Mutfağı Yemek Tarifleri" adlı web sitesinin gereksinimlerini detaylandırmaktadır. Projenin amacı, çeşitli dünya mutfaklarından tarifleri kullanıcı dostu bir arayüzle sunmak ve yemek meraklıları için kapsamlı bir kaynak oluşturmaktır.
+
+2. Amaç
+Kullanıcıların farklı mutfaklara ait yemek tariflerine kolayca erişmesini sağlamak.
+
+Her tarif için detaylı bilgi (köken, lezzet profili, malzemeler, hazırlanışı, servis önerisi, besin bilgileri) sunmak.
+
+Görsel olarak çekici ve kullanıcı dostu bir arayüz sağlamak.
+
+Arama motorlarında görünürlüğü artırmak.
+
+3. Hedef Kitle
+Yemek yapmayı sevenler ve yeni tarifler keşfetmek isteyenler.
+
+Farklı kültürlerin mutfaklarını merak edenler.
+
+Sağlıklı beslenmeye dikkat eden ve besin bilgisi arayanlar.
+
+Yemek pişirme konusunda ilham arayan herkes.
+
+4. Kapsam
+Web sitesi başlangıçta 10 farklı dünya mutfağından tarifler içerecektir. Bu mutfaklar, kullanıcının yüklediği görseldeki .txt dosyalarına göre belirlenmiştir:
+
+Çin Mutfağı (chine_mutfagi.txt)
+
+Fransız Mutfağı (france_mutfagi.txt)
+
+Yunan Mutfağı (greek_mutfagi.txt)
+
+Hint Mutfağı (india_mutfagi.txt)
+
+İtalyan Mutfağı (italy_mutfagi.txt)
+
+Japon Mutfağı (japon_mutfagi.txt)
+
+Meksika Mutfağı (mexico_mutfagi.txt)
+
+İspanyol Mutfağı (spain_mutfagi.txt)
+
+Tayland Mutfağı (tayland_mutfagi.txt)
+
+Türk Mutfağı (turk_mutfagi.txt)
+
+Her mutfağa ait tarifler, belirtilen formatta (.txt dosyalarından okunacak şekilde) sunulacaktır.
+
+5. Özellikler
+5.1. Temel Özellikler
+Ana Sayfa:
+
+Öne çıkan tarifler veya rastgele seçilmiş tariflerin görselleri ve kısa açıklamaları.
+
+Mutfak kategorilerine hızlı erişim.
+
+Arama çubuğu.
+
+Mutfak Kategorisi Sayfaları:
+
+Seçilen mutfağa ait tüm tariflerin listesi (yemek adı ve küçük bir görsel ile).
+
+Tariflerin alfabetik veya popülerlik gibi kriterlere göre sıralama seçeneği (gelecekte eklenebilir).
+
+Tarif Detay Sayfası:
+
+YEMEK ADI: Büyük ve belirgin bir başlık.
+
+Yemek Resmi: Yemeğin yüksek kaliteli fotoğrafı (şimdilik boş olacak, daha sonra eklenecek).
+
+KÖKENİ VE KISA TARİHÇESİ: Yemeğin kökeni ve tarihçesi hakkında kısa bilgi.
+
+LEZZET PROFİLİ: Yemeğin tat ve doku özelliklerinin açıklaması.
+
+MALZEMELER: Maddeler halinde liste.
+
+HAZIRLANIŞI (Adım Adım): Numaralı adımlar halinde, her adım için tahmini süre belirtilerek.
+
+SERVİS ÖNERİSİ: Yemeğin nasıl servis edilmesi gerektiğine dair ipuçları.
+
+SAĞLIK VE BESİN BİLGİLERİ: Yemeğin besin değeri hakkında genel bilgiler (protein, karbonhidrat, kalori vb.).
+
+Arama Fonksiyonu: Yemek adı, mutfak veya anahtar kelimeye göre arama yapabilme.
+
+5.2. Gelecekteki Özellikler (MVP Sonrası)
+Kullanıcı kayıt ve profil yönetimi.
+
+Favori tarifleri kaydetme.
+
+Tariflere yorum yapabilme ve derecelendirme.
+
+Malzeme listesinden alışveriş listesi oluşturma.
+
+Filtreleme seçenekleri (vegan, vejetaryen, glutensiz vb.).
+
+Sosyal medya paylaşım butonları.
+
+Video tarifler.
+
+6. Kullanıcı Arayüzü (UI) ve Kullanıcı Deneyimi (UX)
+Tasarım: Modern, temiz ve göz yormayan bir tasarım. Yemek görsellerine odaklanacak şekilde düzen.
+
+Renk Paleti: Mutfak temalarına uygun, sıcak ve iştah açıcı renkler tercih edilebilir.
+
+Navigasyon: Kolay ve sezgisel navigasyon menüsü. Mutfak kategorilerine hızlı erişim.
+
+Responsive Tasarım: Web sitesi, masaüstü, tablet ve mobil cihazlarda sorunsuz bir şekilde görüntülenebilecek ve kullanılabilecek şekilde responsive olacaktır.
+
+7. Teknik Gereksinimler
+Veri Kaynağı: Tarif bilgileri, kullanıcının belirttiği .txt dosyalarından okunacaktır. Her bir .txt dosyası, o mutfağa ait birden fazla tarif içerebilir ve her tarif yukarıda belirtilen formatta olmalıdır.
+
+Backend Teknolojisi (Öneri): Python (Django/Flask) veya Node.js (Express) gibi bir backend framework kullanılabilir. Bu, .txt dosyalarından veriyi okuma, işleme ve API aracılığıyla sunma yeteneği sağlayacaktır.
+
+Frontend Teknolojisi (Öneri): React, Vue.js veya Angular gibi bir modern JavaScript kütüphanesi/framework'ü kullanılabilir. Bu, dinamik ve interaktif bir kullanıcı arayüzü sunacaktır. Alternatif olarak, basit ve hızlı bir başlangıç için HTML, CSS ve vanilya JavaScript de düşünülebilir.
+
+Veritabanı (Öneri): Tarif verileri, kolayca aranabilir ve yönetilebilir olması için bir veritabanında (örn: PostgreSQL, MongoDB) saklanmalıdır. Başlangıçta .txt dosyalarından veritabanına aktarım yapılabilir.
+
+Barındırma: Güvenilir ve ölçeklenebilir bir hosting çözümü (örn: AWS, Google Cloud, Azure, DigitalOcean).
+
+8. Veri Yapısı (TXT Dosyaları İçin)
+Her bir .txt dosyası içinde, tarifler aşağıdaki formatta olmalıdır. Her tarif birbirinden çift satır boşlukla ayrılabilir.
+
+**YEMEK ADI:** [Yemeğin Adı]
+
+**KÖKENİ VE KISA TARİHÇESİ:**
+[Köken ve Tarihçe Metni]
+
+**LEZZET PROFİLİ:**
+[Lezzet Profili Metni]
+
+**MALZEMELER:**
+- [Malzeme 1]
+- [Malzeme 2]
+- ...
+
+**HAZIRLANIŞI (Adım Adım):**
+1. [Adım 1] ([Süre])
+2. [Adım 2] ([Süre])
+...
+
+**SERVİS ÖNERİSİ:**
+[Servis Önerisi Metni]
+
+**SAĞLIK VE BESİN BİLGİLERİ:**
+[Sağlık ve Besin Bilgileri Metni]
+
+Not: Yemek resimleri için bir placeholder (yer tutucu) kullanılacak ve resimler sisteme yüklendiğinde tariflere atanabilecektir. Resimler için bir resim yükleme ve yönetim sistemi gerekecektir.
+
+9. Performans Gereksinimleri
+Sayfa yükleme süreleri hızlı olmalıdır (tercihen 3 saniyenin altında).
+
+Arama sorguları hızlı yanıt vermelidir.
+
+Yüksek trafik durumlarında bile performansını korumalıdır.
+
+10. Güvenlik Gereksinimleri
+SSL/TLS sertifikası (HTTPS) kullanılarak tüm iletişim şifrelenecektir.
+
+Potansiyel güvenlik açıklarına karşı düzenli kontroller yapılacaktır.
+
+11. SEO Gereksinimleri
+Her tarif ve mutfak sayfası için özelleştirilebilir başlık etiketleri, meta açıklamalar ve anahtar kelimeler.
+
+URL yapıları SEO dostu olacaktır (örn: /mutfak/yemek-adi).
+
+Schema.org markup (Recipe) kullanılarak arama motorları için zengin sonuçlar sağlanacaktır.
+
+Site haritası (sitemap.xml) ve robots.txt dosyaları oluşturulacaktır.
+
+12. Test Gereksinimleri
+Fonksiyonel testler: Tüm özelliklerin beklendiği gibi çalıştığını doğrulamak.
+
+Kullanılabilirlik testleri: Kullanıcıların siteyi rahatça kullanabildiğini doğrulamak.
+
+Performans testleri: Sitenin yük altında nasıl davrandığını ölçmek.
+
+Güvenlik testleri: Potansiyel güvenlik açıklarını belirlemek.
+
+Cihaz uyumluluk testleri: Farklı cihaz ve tarayıcılarda görünüm ve işlevselliğin doğru olduğunu doğrulamak.
+
+13. İzleme ve Analitik
+Google Analytics veya benzeri bir araç kullanılarak site trafiği, kullanıcı davranışları ve popüler tarifler izlenecektir. Bu veriler, gelecekteki geliştirmeler için kullanılacaktır.
+
+14. Dağıtım ve Yayınlama
+Web sitesi, bir alan adı altında internette yayınlanacaktır.
+
+Sürüm kontrol sistemi (örn: Git) kullanılacaktır.
