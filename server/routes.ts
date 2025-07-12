@@ -7,20 +7,7 @@ import { join } from "path";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize data on startup
   try {
-    const filePath = join(process.cwd(), 'attached_assets', 'turk_mutfagi_1752349052207.txt');
-    const { recipes, cuisines } = RecipeParser.parseRecipeFile(filePath);
-    
-    // Create cuisines first
-    for (const cuisine of cuisines) {
-      await storage.createCuisine(cuisine);
-    }
-    
-    // Create recipes
-    for (const recipe of recipes) {
-      await storage.createRecipe(recipe);
-    }
-    
-    console.log(`Loaded ${recipes.length} recipes and ${cuisines.length} cuisines`);
+    await storage.initializeData();
   } catch (error) {
     console.error('Error initializing data:', error);
   }

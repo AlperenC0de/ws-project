@@ -1,6 +1,10 @@
 import { readFileSync } from 'fs';
-import { join } from 'path';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import type { InsertRecipe, InsertCuisine } from '@shared/schema';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 interface ParsedRecipe {
   name: string;
@@ -220,7 +224,15 @@ export class RecipeParser {
 
   private static parseRecipes(content: string, forcedCuisine?: string): InsertRecipe[] {
     const recipes: InsertRecipe[] = [];
-    const sections = content.split('**YEMEK ADI:**').filter(section => section.trim());
+    
+    // Split by recipe delimiter - handle both formats
+    let sections: string[] = [];
+    if (content.includes('**YEMEK ADI:**')) {
+      sections = content.split('**YEMEK ADI:**').filter(section => section.trim());
+    } else {
+      // For files that don't use Turkish format, split by separator lines
+      sections = content.split(/─{20,}|━{20,}/).filter(section => section.trim() && section.includes('**'));
+    }
     
     for (const section of sections) {
       try {
@@ -245,18 +257,42 @@ export class RecipeParser {
     let currentSection = '';
     let currentContent: string[] = [];
     
-    // Extract recipe name
-    recipe.name = lines[0].trim();
+    // Extract recipe name - handle both Turkish and other formats
+    let recipeName = '';
+    let nameFound = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.startsWith('**YEMEK ADI:**')) {
+        recipeName = line.replace('**YEMEK ADI:**', '').trim();
+        nameFound = true;
+        break;
+      } else if (line && !line.startsWith('**') && !line.startsWith('━') && !line.startsWith('─') && !nameFound) {
+        // First non-header line is likely the recipe name
+        recipeName = line.trim();
+        nameFound = true;
+        break;
+      }
+    }
+    
+    recipe.name = recipeName;
     
     // Determine category based on content structure
     let currentCategory = 'Main Course';
-    if (section.includes('KEBAPLAR')) {
+    const sectionUpper = section.toUpperCase();
+    if (sectionUpper.includes('KEBAP') || sectionUpper.includes('KEBAB')) {
       currentCategory = 'Kebabs';
-    } else if (section.includes('GÜVEÇ') || section.includes('TENCERE')) {
+    } else if (sectionUpper.includes('GÜVEÇ') || sectionUpper.includes('TENCERE')) {
       currentCategory = 'Stews';
+    } else if (sectionUpper.includes('MAKARNA') || sectionUpper.includes('PASTA')) {
+      currentCategory = 'Pasta';
+    } else if (sectionUpper.includes('TACO') || sectionUpper.includes('ENCHILADA')) {
+      currentCategory = 'Main Course';
+    } else if (sectionUpper.includes('SUSHI') || sectionUpper.includes('RAMEN')) {
+      currentCategory = 'Main Course';
     }
     
-    for (let i = 1; i < lines.length; i++) {
+    for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       
       if (line.startsWith('**KÖKENİ VE KISA TARİHÇESİ:**')) {

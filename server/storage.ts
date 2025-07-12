@@ -157,13 +157,6 @@ export class DatabaseStorage implements IStorage {
   }
 
   async initializeData(): Promise<void> {
-    // Check if data already exists
-    const existingCuisines = await db.select().from(cuisines);
-    if (existingCuisines.length > 0) {
-      console.log('Database already initialized');
-      return;
-    }
-
     // Load all recipes from the 10 cuisine files
     const { recipes: recipeData, cuisines: cuisineData } = RecipeParser.parseAllRecipeFiles();
     
